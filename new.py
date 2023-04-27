@@ -20,7 +20,9 @@ class Player(GameSprite):
 
 DARK_BLUE = (25, 15, 44)
 
-w1 = GameSprite('w1.png', 100, 400, 200, 20)
+w1 = GameSprite('w1.png', 100, 300, 600, 20)
+w2 = GameSprite('w2.png', 300, 50, 200, 300)
+w3 = GameSprite('w3.png', 50, 400, 100, 20)
 player = Player('gg.png', 25, 25, 100, 125, 10, 10)
 
 window = display.set_mode((700, 500))
@@ -41,6 +43,8 @@ while run:
                 player.x_speed += 10
     window.fill(DARK_BLUE)
     w1.reset()
+    w2.reset()
+    w3.reset()
     player.reset()
     player.update()
     time.delay(50)
