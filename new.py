@@ -41,6 +41,9 @@ while run:
                 player.x_speed -= 10
             elif e.key == K_d:
                 player.x_speed += 10
+        elif e.type == KEYUP:
+            player.y_speed = 0
+            player.x_speed = 0
     window.fill(DARK_BLUE)
     w1.reset()
     w2.reset()
