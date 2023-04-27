@@ -19,15 +19,46 @@ class Player(GameSprite):
        self.rect.y += self.y_speed
 
 DARK_BLUE = (25, 15, 44)
+YELLOW = (250, 227, 17)
 
-w1 = GameSprite('w1.png', 100, 300, 600, 20)
-w2 = GameSprite('w2.png', 300, 50, 200, 300)
+w1 = GameSprite('w1.png', 100, 300, 800, 200)
+w2 = GameSprite('w2.png', 300, 50, 300, 300)
 w3 = GameSprite('w3.png', 50, 400, 100, 20)
-player = Player('gg.png', 25, 25, 100, 125, 10, 10)
+player = Player('gg.png', 70, 70, 10, 10, 0, 0)
+final = GameSprite('fin.png', 50, 50, 950, 650)
 
-window = display.set_mode((700, 500))
+font.init()
+font = font.SysFont('verdana', 65)
+win = font.render('YOU WIN', True, YELLOW)
+#win = transform.scale(image.load('win.png'), (1000, 700)), ((0, 0))
+
+barriers = sprite.Group()
+barriers.add(w1)
+barriers.add(w2)
+barriers.add(w3)
+
+def update(self):
+    self.rect.x += self.x_speed
+    platforms_touch = sprite.spritecollide(self, barriers, False)
+    if self.x_speed > 0:
+        for i in platforms_touch:
+            self.rect.right = min(self.rect.right, i.rect.left)
+    elif self.x_speed < 0:
+        for i in platforms_touch:
+            self.rect.left = min(self.rect.left, i.rect.right)
+    self.rect.y += self.y_speed
+    platforms_touch = sprite.spritecollide(self, barriers, False)
+    if self.y_speed > 0:
+        for i in platforms_touch:
+            self.rect.bottom = min(self.rect.bottom, i.rect.top)
+    elif self.y_speed < 0:
+        for i in platforms_touch:
+            self.rect.top = min(self.rect.top, i.rect.bottom)
+
+window = display.set_mode((1000, 700))
 display.set_caption('Первый проект')
 run = True
+finish = False
 while run:
     for e in event.get():
         if e.type == QUIT:
@@ -44,14 +75,15 @@ while run:
         elif e.type == KEYUP:
             player.y_speed = 0
             player.x_speed = 0
-    window.fill(DARK_BLUE)
-    w1.reset()
-    w2.reset()
-    w3.reset()
-    player.reset()
-    player.update()
-    time.delay(50)
-    display.update()
+    if finish != True:
+        window.fill(DARK_BLUE)
+        barriers.draw(window)
+        player.reset()
+        player.update()
+        final.reset()
+        time.delay(50)
+        display.update()
 
-
-
+        if sprite.collide_rect(player, final):
+            finish = True
+            window.blit(win, (0, 0))
