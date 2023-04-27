@@ -18,8 +18,10 @@ class Player(GameSprite):
        self.rect.x += self.x_speed
        self.rect.y += self.y_speed
 
-wind = GameSprite('main_wind.png', 700, 500, 0, 0)
-player = Player('gg.png', 75, 75, 100, 125, 10, 10)
+DARK_BLUE = (25, 15, 44)
+
+w1 = GameSprite('w1.png', 100, 400, 200, 20)
+player = Player('gg.png', 25, 25, 100, 125, 10, 10)
 
 window = display.set_mode((700, 500))
 display.set_caption('Первый проект')
@@ -37,13 +39,12 @@ while run:
                 player.x_speed -= 10
             elif e.key == K_d:
                 player.x_speed += 10
-
-    time.delay(50)
-    wind.reset()
+    window.fill(DARK_BLUE)
+    w1.reset()
     player.reset()
+    player.update()
+    time.delay(50)
     display.update()
-
-
 
 
 
