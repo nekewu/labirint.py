@@ -15,8 +15,23 @@ class Player(GameSprite):
         self.x_speed = x_speed
         self.y_speed = y_speed
     def update(self):
-       self.rect.x += self.x_speed
-       self.rect.y += self.y_speed
+        self.rect.x += self.x_speed
+        platforms_touch = sprite.spritecollide(self, barriers, False)
+        if self.x_speed > 0:
+            for i in platforms_touch:
+                self.rect.right = min(self.rect.right, i.rect.left)
+        elif self.x_speed < 0:
+            for i in platforms_touch:
+                self.rect.left = min(self.rect.left, i.rect.right)
+        self.rect.y += self.y_speed
+        platforms_touch = sprite.spritecollide(self, barriers, False)
+        if self.y_speed > 0:
+            for i in platforms_touch:
+                self.rect.bottom = min(self.rect.bottom, i.rect.top)
+        elif self.y_speed < 0:
+            for i in platforms_touch:
+                self.rect.top = min(self.rect.top, i.rect.bottom)
+
 
 DARK_BLUE = (25, 15, 44)
 YELLOW = (250, 227, 17)
@@ -37,23 +52,6 @@ barriers.add(w1)
 barriers.add(w2)
 barriers.add(w3)
 
-def update(self):
-    self.rect.x += self.x_speed
-    platforms_touch = sprite.spritecollide(self, barriers, False)
-    if self.x_speed > 0:
-        for i in platforms_touch:
-            self.rect.right = min(self.rect.right, i.rect.left)
-    elif self.x_speed < 0:
-        for i in platforms_touch:
-            self.rect.left = min(self.rect.left, i.rect.right)
-    self.rect.y += self.y_speed
-    platforms_touch = sprite.spritecollide(self, barriers, False)
-    if self.y_speed > 0:
-        for i in platforms_touch:
-            self.rect.bottom = min(self.rect.bottom, i.rect.top)
-    elif self.y_speed < 0:
-        for i in platforms_touch:
-            self.rect.top = min(self.rect.top, i.rect.bottom)
 
 window = display.set_mode((1000, 700))
 display.set_caption('Первый проект')
