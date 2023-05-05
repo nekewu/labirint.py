@@ -31,13 +31,8 @@ class Player(GameSprite):
         elif self.y_speed < 0:
             for i in platforms_touch:
                 self.rect.top = min(self.rect.top, i.rect.bottom)
-<<<<<<< HEAD
-
-=======
     def fire(self):
         bullet = Bullet('bullet.png', self.rect.right, self.rect.centery, 15, 20, 15)
->>>>>>> main
-
         bullets.add(bullet)
 
 class EnemyX(GameSprite):
@@ -105,14 +100,9 @@ barriers.add(w1)
 barriers.add(w2)
 barriers.add(w3)
 
-<<<<<<< HEAD
-
-window = display.set_mode((1000, 700))
-=======
 win_width = 1000
 win_height = 700
 window = display.set_mode((win_width, win_height))
->>>>>>> main
 display.set_caption('Первый проект')
 
 run = True
