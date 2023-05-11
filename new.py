@@ -33,7 +33,6 @@ class Player(GameSprite):
                 self.rect.top = min(self.rect.top, i.rect.bottom)
     def fire(self):
         bullet = Bullet('bullet.png', self.rect.right, self.rect.centery, 15, 20, 15)
-
         bullets.add(bullet)
 
 class EnemyX(GameSprite):
