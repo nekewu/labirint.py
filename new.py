@@ -97,9 +97,9 @@ lose = font.render('GAME OVER', True, RED)
 
 barriers = sprite.Group()
 barriers.add(w1, w2, w3)
-
 monsters = sprite.Group()
 monsters.add(monster1, monster2, monster3, monster4)
+bullets = sprite.Group()
 
 win_width = 1000
 win_height = 700
