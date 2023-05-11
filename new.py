@@ -15,22 +15,27 @@ class Player(GameSprite):
         self.x_speed = x_speed
         self.y_speed = y_speed
     def update(self):
-        self.rect.x += self.x_speed
-        platforms_touch = sprite.spritecollide(self, barriers, False)
+        if self.rect.x <= win_width - 80 and self.x_speed > 0 or self.rect.x >= 0 and self.x_speed < 0:
+            self.rect.x += self.x_speed
+        platforms_touched = sprite.spritecollide(self, barriers, False)
         if self.x_speed > 0:
-            for i in platforms_touch:
-                self.rect.right = min(self.rect.right, i.rect.left)
+            for p in platforms_touched:
+                self.rect.right = min(self.rect.right, p.rect.left)
         elif self.x_speed < 0:
-            for i in platforms_touch:
-                self.rect.left = min(self.rect.left, i.rect.right)
-        self.rect.y += self.y_speed
-        platforms_touch = sprite.spritecollide(self, barriers, False)
+            for p in platforms_touched:
+                self.rect.left = max(self.rect.left, p.rect.right)
+        if self.rect.y <= win_height - 80 and self.y_speed > 0 or self.rect.y >= 0 and self.y_speed < 0:
+            self.rect.y += self.y_speed
+        platforms_touched = sprite.spritecollide(self, barriers, False)
         if self.y_speed > 0:
-            for i in platforms_touch:
-                self.rect.bottom = min(self.rect.bottom, i.rect.top)
+            for p in platforms_touched:
+                self.y_speed = 0
+                if p.rect.top < self.rect.bottom:
+                    self.rect.bottom = p.rect.top
         elif self.y_speed < 0:
-            for i in platforms_touch:
-                self.rect.top = min(self.rect.top, i.rect.bottom)
+            for p in platforms_touched:
+                self.y_speed = 0
+                self.rect.top = max(self.rect.top, p.rect.bottom)
     def fire(self):
         bullet = Bullet('bullet.png', self.rect.right, self.rect.centery, 15, 20, 15)
         bullets.add(bullet)
@@ -104,7 +109,7 @@ bullets = sprite.Group()
 win_width = 1000
 win_height = 700
 window = display.set_mode((win_width, win_height))
-display.set_caption('Первый проект')
+display.set_caption('Лабиринт')
 
 run = True
 finish = False
@@ -121,28 +126,40 @@ while run:
                 player.x_speed -= 10
             elif e.key == K_d:
                 player.x_speed += 10
+            elif e.type == K_SPACE:
+                player.fire()
         elif e.type == KEYUP:
             player.y_speed = 0
             player.x_speed = 0
-        if e.type == K_SPACE:
-            player.fire()
+
     if finish != True:
         window.fill(DARK_BLUE)
-        barriers.draw(window)
+
         player.reset()
         player.update()
         final.reset()
+
         time.delay(50)
         display.update()
+
         monsters.update()
         monsters.draw(window)
+
+        barriers.update()
+        barriers.draw(window)
+
         bullets.update()
         bullets.draw(window)
+
+        sprite.groupcollide(monsters, bullets, True, True)
+        sprite.groupcollide(bullets, barriers, True, False)
+
         if sprite.collide_rect(player, final):
             finish = True
             window.blit(win, (170, 170))
+
         if sprite.spritecollide(player, monsters, False):
             finish = True
             window.blit(lose, (110, 170))
-        sprite.groupcollide(bullets, monsters, True, False)
+
     display.update()
