@@ -33,6 +33,7 @@ class Player(GameSprite):
                 self.rect.top = min(self.rect.top, i.rect.bottom)
     def fire(self):
         bullet = Bullet('bullet.png', self.rect.right, self.rect.centery, 15, 20, 15)
+
         bullets.add(bullet)
 
 class EnemyX(GameSprite):
@@ -78,6 +79,7 @@ class Bullet(GameSprite):
 
 DARK_BLUE = (0, 51, 102)
 YELLOW = (250, 227, 17)
+RED = (255, 0, 51)
 
 w1 = GameSprite('w1.png', 100, 300, 800, 200)
 w2 = GameSprite('w2.png', 300, 50, 300, 300)
@@ -92,13 +94,16 @@ monster4 = EnemyY('enemy2.png', 70, 70, 100, 505, 5, 505, 605)
 font.init()
 font = font.SysFont('verdana', 140)
 win = font.render('YOU WIN', True, YELLOW)
+lose = font.render('GAME OVER', True, RED)
+
 
 bullets = sprite.Group()
 
 barriers = sprite.Group()
-barriers.add(w1)
-barriers.add(w2)
-barriers.add(w3)
+barriers.add(w1, w2, w3)
+
+monsters = sprite.Group()
+monsters.add(monster1, monster2, monster3, monster4)
 
 win_width = 1000
 win_height = 700
@@ -133,17 +138,14 @@ while run:
         final.reset()
         time.delay(50)
         display.update()
-        monster1.reset()
-        monster1.update()
-        monster2.reset()
-        monster2.update()
-        monster3.reset()
-        monster3.update()
-        monster4.reset()
-        monster4.update()
+        monsters.update()
+        monsters.draw(window)
         bullets.update()
         bullets.draw(window)
         if sprite.collide_rect(player, final):
             finish = True
             window.blit(win, (170, 170))
+        if sprite.spritecollide(player, monsters, False):
+            finish = True
+            window.blit(lose, (110, 170))
     display.update()
