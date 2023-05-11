@@ -73,7 +73,7 @@ class Bullet(GameSprite):
         self.speed = speed
     def update(self):
         self.rect.x += self.speed
-        if self.rect.x >= win_width:
+        if self.rect.x > win_width+10:
             self.kill()
 
 DARK_BLUE = (0, 51, 102)
