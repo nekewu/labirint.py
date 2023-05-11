@@ -95,9 +95,6 @@ font = font.SysFont('verdana', 140)
 win = font.render('YOU WIN', True, YELLOW)
 lose = font.render('GAME OVER', True, RED)
 
-
-bullets = sprite.Group()
-
 barriers = sprite.Group()
 barriers.add(w1, w2, w3)
 
@@ -147,4 +144,5 @@ while run:
         if sprite.spritecollide(player, monsters, False):
             finish = True
             window.blit(lose, (110, 170))
+        sprite.groupcollide(bullets, monsters, True, False)
     display.update()
