@@ -146,4 +146,4 @@ while run:
         if sprite.collide_rect(player, final):
             finish = True
             window.blit(win, (170, 170))
-        display.update()
+    display.update()
