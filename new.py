@@ -37,7 +37,7 @@ class Player(GameSprite):
                 self.y_speed = 0
                 self.rect.top = max(self.rect.top, p.rect.bottom)
     def fire(self):
-        bullet = Bullet('bullet.png', self.rect.right, self.rect.centery, 15, 20, 15)
+        bullet = Bullet('bullet.png', 15, 20, self.rect.right, self.rect.centery, 15)
         bullets.add(bullet)
 
 class EnemyX(GameSprite):
@@ -126,7 +126,7 @@ while run:
                 player.x_speed -= 10
             elif e.key == K_d:
                 player.x_speed += 10
-            elif e.type == K_SPACE:
+            elif e.key == K_SPACE:
                 player.fire()
         elif e.type == KEYUP:
             player.y_speed = 0
